@@ -1,0 +1,71 @@
+# Label Contract — Z_t discrete behavioural states
+# Frozen 6-state taxonomy for Week-1
+
+states:
+  - BENIGN
+  - RECON
+  - INITIAL_ACCESS
+  - LATERAL_MOVEMENT
+  - C2
+  - IMPACT
+
+state_indices:
+  BENIGN: 0
+  RECON: 1
+  INITIAL_ACCESS: 2
+  LATERAL_MOVEMENT: 3
+  C2: 4
+  IMPACT: 5
+
+num_states: 6
+
+# Precedence: IMPACT (highest priority = lowest rank value) > ... > BENIGN
+# tactic(window) = state with minimum rank among labels present
+# BENIGN only when NO attack label present
+precedence:
+  IMPACT: 1
+  C2: 2
+  LATERAL_MOVEMENT: 3
+  INITIAL_ACCESS: 4
+  RECON: 5
+  BENIGN: 6
+
+# Raw CIC-IDS2017 label → bucket mapping
+# Strip whitespace from raw labels before matching
+label_map:
+  "BENIGN": BENIGN
+  "PortScan": RECON
+  "Bot": C2
+  "Infiltration": LATERAL_MOVEMENT
+  "Web Attack \uFFFD Brute Force": INITIAL_ACCESS
+  "Web Attack \uFFFD XSS": INITIAL_ACCESS
+  "Web Attack \uFFFD Sql Injection": INITIAL_ACCESS
+  "Web Attack  Brute Force": INITIAL_ACCESS
+  "Web Attack  XSS": INITIAL_ACCESS
+  "Web Attack  Sql Injection": INITIAL_ACCESS
+  "FTP-Patator": INITIAL_ACCESS
+  "SSH-Patator": INITIAL_ACCESS
+  "Heartbleed": INITIAL_ACCESS
+  "DoS Hulk": IMPACT
+  "DoS GoldenEye": IMPACT
+  "DoS slowloris": IMPACT
+  "DoS Slowhttptest": IMPACT
+  "DDoS": IMPACT
+
+# ATT&CK tactic mapping (semantic context, not ground truth)
+attck_tactic_map:
+  BENIGN: null
+  RECON: "Reconnaissance"
+  INITIAL_ACCESS: "Initial Access"
+  LATERAL_MOVEMENT: "Lateral Movement"
+  C2: "Command and Control"
+  IMPACT: "Impact"
+
+# Likely ATT&CK techniques per bucket
+attck_technique_map:
+  BENIGN: []
+  RECON: ["T1595 - Active Scanning", "T1046 - Network Service Discovery"]
+  INITIAL_ACCESS: ["T1110 - Brute Force", "T1190 - Exploit Public-Facing Application"]
+  LATERAL_MOVEMENT: ["T1021 - Remote Services", "T1550 - Use Alternate Authentication Material"]
+  C2: ["T1071 - Application Layer Protocol", "T1102 - Web Service"]
+  IMPACT: ["T1498 - Network Denial of Service", "T1499 - Endpoint Denial of Service"]

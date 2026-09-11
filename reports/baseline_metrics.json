@@ -1,0 +1,110 @@
+{
+  "A1_current_risk_test": {
+    "label": "A1_current_risk_test",
+    "macro_f1": 0.7853788538707254,
+    "precision": 0.873717682076816,
+    "recall": 0.7779898195615916,
+    "fpr": 0.4435533621220556,
+    "n_samples": 11287,
+    "positive_rate": 0.5691503499601311
+  },
+  "A2_current_tactic_test": {
+    "label": "A2_current_tactic_test",
+    "macro_f1": 0.25834112005849014,
+    "macro_precision": 0.30269077327900856,
+    "macro_recall": 0.2469463955809692,
+    "per_class": {
+      "BENIGN": {
+        "precision": 1.0,
+        "recall": 0.4838577010076085,
+        "f1": 0.6521618625277162,
+        "support": 4863
+      },
+      "RECON": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "INITIAL_ACCESS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "LATERAL_MOVEMENT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "C2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "IMPACT": {
+        "precision": 0.8161446396740515,
+        "recall": 0.9978206724782067,
+        "f1": 0.8978848578232246,
+        "support": 6424
+      }
+    },
+    "n_samples": 11287
+  },
+  "B1_onestep_risk_test": {
+    "label": "B1_onestep_risk_test",
+    "macro_f1": 0.7761320952068105,
+    "precision": 0.8686658700268948,
+    "recall": 0.7696336701171511,
+    "fpr": 0.4588646647469233,
+    "n_samples": 11286,
+    "positive_rate": 0.5692007797270955
+  },
+  "B2_onestep_tactic_test": {
+    "label": "B2_onestep_tactic_test",
+    "macro_f1": 0.2547207241633398,
+    "macro_precision": 0.30246347797832823,
+    "macro_recall": 0.2428883062948333,
+    "per_class": {
+      "BENIGN": {
+        "precision": 0.9995551601423488,
+        "recall": 0.46215549156725627,
+        "f1": 0.6320675105485232,
+        "support": 4862
+      },
+      "RECON": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "INITIAL_ACCESS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "LATERAL_MOVEMENT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "C2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "IMPACT": {
+        "precision": 0.8152257077276205,
+        "recall": 0.9951743462017435,
+        "f1": 0.8962568344315155,
+        "support": 6424
+      }
+    },
+    "n_samples": 11286
+  }
+}

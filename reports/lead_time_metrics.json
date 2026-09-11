@@ -1,0 +1,418 @@
+{
+  "threshold_used": 0.9,
+  "threshold_selected_on": "validation",
+  "total_attack_sequences": 6512,
+  "median_lead_time_sec": 0.0,
+  "mean_lead_time_sec": -0.76,
+  "positive_lead_time_count": 13,
+  "positive_lead_time_rate": 0.002,
+  "criterion_3": {
+    "median_lead_time_target": 10.0,
+    "positive_rate_target": 0.6,
+    "median_passes": false,
+    "rate_passes": false,
+    "overall_passes": false
+  },
+  "lead_time_details": [
+    {
+      "attack_onset_k": 4,
+      "attack_onset_sec": 50,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -50,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 3,
+      "attack_onset_sec": 40,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -40,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 2,
+      "attack_onset_sec": 30,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -30,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 1,
+      "attack_onset_sec": 20,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -20,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": null,
+      "first_forecast_sec": null,
+      "lead_time_sec": -10,
+      "detected": false
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 2,
+      "first_forecast_sec": 30,
+      "lead_time_sec": -20.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 1,
+      "first_forecast_sec": 20,
+      "lead_time_sec": -10.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 1,
+      "first_forecast_sec": 20,
+      "lead_time_sec": -10.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    },
+    {
+      "attack_onset_k": 0,
+      "attack_onset_sec": 10,
+      "first_forecast_k": 0,
+      "first_forecast_sec": 10,
+      "lead_time_sec": 0.0,
+      "detected": true
+    }
+  ]
+}

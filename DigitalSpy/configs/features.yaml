@@ -1,0 +1,102 @@
+# Feature Contract — Frozen 24-dimensional continuous state vector S_t
+# Do NOT add, remove, or rename features without Change Control (§30)
+
+feature_groups:
+  volume_timing:
+    - flow_count
+    - total_bytes
+    - total_packets
+    - mean_flow_duration
+    - bytes_per_sec
+    - packets_per_sec
+
+  tcp_flag_ratios:
+    - syn_ratio
+    - ack_ratio
+    - fin_ratio
+    - rst_ratio
+    - psh_ratio
+
+  inter_arrival:
+    - mean_iat
+    - std_iat
+    - max_iat
+
+  packet_size:
+    - mean_packet_len
+    - std_packet_len
+
+  diversity:
+    - distinct_dst_ips
+    - distinct_dst_ports
+    - distinct_src_ports_used
+
+  directionality:
+    - fwd_bwd_byte_ratio
+    - mean_init_win_bytes_fwd
+
+  packet_derived:
+    - ttl_variance
+    - tcp_window_std
+    - fragmentation_ratio
+
+# Provenance field — NOT a predictive feature initially
+provenance:
+  - has_packet_features
+
+# Derived ordered feature list (must be exactly 24)
+feature_names:
+  - flow_count
+  - total_bytes
+  - total_packets
+  - mean_flow_duration
+  - bytes_per_sec
+  - packets_per_sec
+  - syn_ratio
+  - ack_ratio
+  - fin_ratio
+  - rst_ratio
+  - psh_ratio
+  - mean_iat
+  - std_iat
+  - max_iat
+  - mean_packet_len
+  - std_packet_len
+  - distinct_dst_ips
+  - distinct_dst_ports
+  - distinct_src_ports_used
+  - fwd_bwd_byte_ratio
+  - mean_init_win_bytes_fwd
+  - ttl_variance
+  - tcp_window_std
+  - fragmentation_ratio
+
+# CIC-IDS2017 raw column mappings (columns have leading spaces — strip required)
+raw_columns:
+  flow_duration: "Flow Duration"
+  total_fwd_packets: "Total Fwd Packets"
+  total_bwd_packets: "Total Backward Packets"
+  total_fwd_bytes: "Total Length of Fwd Packets"
+  total_bwd_bytes: "Total Length of Bwd Packets"
+  fwd_packet_len_mean: "Fwd Packet Length Mean"
+  bwd_packet_len_mean: "Bwd Packet Length Mean"
+  fwd_packet_len_std: "Fwd Packet Length Std"
+  flow_bytes_per_sec: "Flow Bytes/s"
+  flow_packets_per_sec: "Flow Packets/s"
+  flow_iat_mean: "Flow IAT Mean"
+  flow_iat_std: "Flow IAT Std"
+  flow_iat_max: "Flow IAT Max"
+  fwd_iat_mean: "Fwd IAT Mean"
+  syn_flag_count: "SYN Flag Count"
+  ack_flag_count: "ACK Flag Count"
+  fin_flag_count: "FIN Flag Count"
+  rst_flag_count: "RST Flag Count"
+  psh_flag_count: "PSH Flag Count"
+  dst_port: "Destination Port"
+  src_port: "Source Port"
+  dst_ip: "Destination IP"
+  src_ip: "Source IP"
+  init_win_bytes_fwd: "Init_Win_bytes_forward"
+  init_win_bytes_bwd: "Init_Win_bytes_backward"
+  timestamp: "Timestamp"
+  label: "Label"

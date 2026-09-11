@@ -1,0 +1,41 @@
+# Attention-LSTM Configuration
+# Frozen Week-1 architecture — do NOT change without Change Control (§30)
+
+architecture:
+  input_size: 24           # S_t dimension
+  sequence_length: 20      # h = 20 windows
+  hidden_size: 64
+  num_layers: 1
+  dropout: 0.20
+  attention: "additive"    # Bahdanau-style additive attention
+
+training:
+  optimizer: "adam"
+  learning_rate: 0.001     # 1e-3
+  batch_size: 64
+  max_epochs: 100
+  early_stopping:
+    monitor: "val_loss"
+    patience: 10
+    min_delta: 0.0001
+  loss:
+    risk_head: "weighted_bce"
+    tactic_head: "weighted_cross_entropy"
+    head_weight_risk: 1.0
+    head_weight_tactic: 1.0
+
+forecast:
+  K: 5
+  heads:
+    risk:
+      activation: "sigmoid"
+      description: "Binary risk probability per horizon"
+    tactic:
+      activation: "softmax"
+      num_classes: 6
+      description: "6-class tactic probability per horizon"
+
+output:
+  checkpoint: "models/lstm_checkpoint.pt"
+  val_curves: "reports/lstm_val_curves.json"
+  metrics: "reports/lstm_metrics.json"

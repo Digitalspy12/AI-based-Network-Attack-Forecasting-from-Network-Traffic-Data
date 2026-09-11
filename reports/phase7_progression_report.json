@@ -1,0 +1,38 @@
+{
+  "experiment": "Phase 7 \u2014 Controlled Forecasting Progression",
+  "scenario": "validation BENIGN\u2192ATTACK transition sequences",
+  "threshold_used": 0.9,
+  "threshold_source": "frozen from Phase 6 validation selection",
+  "window_seconds": 10,
+  "K": 5,
+  "total_proactive_sequences": 1281,
+  "proactive_detection_count": 13,
+  "proactive_detection_rate": 0.0101,
+  "lead_time": {
+    "median_all_sec": -30.0,
+    "mean_all_sec": -30.53,
+    "p10_sec": -50.0,
+    "p90_sec": -20.0,
+    "median_positive_only_sec": 20.0,
+    "positive_count": 13
+  },
+  "per_horizon_alert_counts": {
+    "k1": 13,
+    "k2": 0,
+    "k3": 0,
+    "k4": 0,
+    "k5": 0
+  },
+  "per_horizon_risk_f1": {
+    "k1": 0.4974,
+    "k2": 0.3839,
+    "k3": 0.3729,
+    "k4": 0.365,
+    "k5": 0.3594
+  },
+  "criterion_3_progression": {
+    "median_passes": false,
+    "rate_passes": false,
+    "overall_passes": false
+  }
+}

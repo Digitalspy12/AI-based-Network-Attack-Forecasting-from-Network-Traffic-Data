@@ -1,0 +1,110 @@
+{
+  "A1_current_risk_test": {
+    "label": "A1_current_risk_test",
+    "macro_f1": 0.5945520069167141,
+    "precision": 0.612926675733044,
+    "recall": 0.598647119108981,
+    "fpr": 0.22705882352940016,
+    "n_samples": 35162,
+    "positive_rate": 0.444002047665093
+  },
+  "A2_current_tactic_test": {
+    "label": "A2_current_tactic_test",
+    "macro_f1": 0.2431291939803062,
+    "macro_precision": 0.22434110388219683,
+    "macro_recall": 0.26860809012755854,
+    "per_class": {
+      "BENIGN": {
+        "precision": 0.6108334183413241,
+        "recall": 0.6125831202046036,
+        "f1": 0.6117070180815201,
+        "support": 19550
+      },
+      "RECON": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 8298
+      },
+      "INITIAL_ACCESS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "LATERAL_MOVEMENT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "C2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 894
+      },
+      "IMPACT": {
+        "precision": 0.7352132049518569,
+        "recall": 0.9990654205607477,
+        "f1": 0.847068145800317,
+        "support": 6420
+      }
+    },
+    "n_samples": 35162
+  },
+  "B1_onestep_risk_test": {
+    "label": "B1_onestep_risk_test",
+    "macro_f1": 0.6017108706643846,
+    "precision": 0.6232356903014211,
+    "recall": 0.6061484237293735,
+    "fpr": 0.21244053404265115,
+    "n_samples": 35161,
+    "positive_rate": 0.4440146753505304
+  },
+  "B2_onestep_tactic_test": {
+    "label": "B2_onestep_tactic_test",
+    "macro_f1": 0.24110701855124975,
+    "macro_precision": 0.22346072204629866,
+    "macro_recall": 0.26498264711402036,
+    "per_class": {
+      "BENIGN": {
+        "precision": 0.5994010120830321,
+        "recall": 0.5937899636810067,
+        "f1": 0.5965822947449569,
+        "support": 19549
+      },
+      "RECON": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 8298
+      },
+      "INITIAL_ACCESS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "LATERAL_MOVEMENT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "C2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 894
+      },
+      "IMPACT": {
+        "precision": 0.74136332019476,
+        "recall": 0.9961059190031153,
+        "f1": 0.8500598165625416,
+        "support": 6420
+      }
+    },
+    "n_samples": 35161
+  }
+}

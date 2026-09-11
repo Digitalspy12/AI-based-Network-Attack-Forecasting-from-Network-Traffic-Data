@@ -1,0 +1,344 @@
+{
+  "experiment": "Phase 7.1 \u2014 Threshold Sensitivity",
+  "val_a_size": 14900,
+  "val_b_size": 8024,
+  "val_b_proactive_sequences": 60,
+  "window_seconds": 10,
+  "val_a_fraction": 0.65,
+  "best_threshold_by_val_a_f1": 0.3,
+  "best_val_a_f1": 0.4793,
+  "threshold_sweep": [
+    {
+      "threshold": 0.3,
+      "val_a_macro_f1": 0.4793,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 12,
+          "rate": 0.2,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 48,
+          "rate": 0.8
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.35,
+      "val_a_macro_f1": 0.4751,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 12,
+          "rate": 0.2,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 48,
+          "rate": 0.8
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.4,
+      "val_a_macro_f1": 0.4741,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 12,
+          "rate": 0.2,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 48,
+          "rate": 0.8
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.45,
+      "val_a_macro_f1": 0.4743,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 12,
+          "rate": 0.2,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 48,
+          "rate": 0.8
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.5,
+      "val_a_macro_f1": 0.4733,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 11,
+          "rate": 0.1833,
+          "median_lead_sec": 30.0,
+          "mean_lead_sec": 26.36,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 49,
+          "rate": 0.8167
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.55,
+      "val_a_macro_f1": 0.4713,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 11,
+          "rate": 0.1833,
+          "median_lead_sec": 30.0,
+          "mean_lead_sec": 26.36,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 49,
+          "rate": 0.8167
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.6,
+      "val_a_macro_f1": 0.4704,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 10,
+          "rate": 0.1667,
+          "median_lead_sec": 30.0,
+          "mean_lead_sec": 27.0,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 50,
+          "rate": 0.8333
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.65,
+      "val_a_macro_f1": 0.4705,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 10,
+          "rate": 0.1667,
+          "median_lead_sec": 30.0,
+          "mean_lead_sec": 27.0,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 50,
+          "rate": 0.8333
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.7,
+      "val_a_macro_f1": 0.471,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 6,
+          "rate": 0.1,
+          "median_lead_sec": 30.0,
+          "mean_lead_sec": 28.33,
+          "p90_lead_sec": 40.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 54,
+          "rate": 0.9
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.75,
+      "val_a_macro_f1": 0.4707,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 4,
+          "rate": 0.0667,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 37.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 56,
+          "rate": 0.9333
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.8,
+      "val_a_macro_f1": 0.4711,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 4,
+          "rate": 0.0667,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 37.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 56,
+          "rate": 0.9333
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.85,
+      "val_a_macro_f1": 0.4716,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 4,
+          "rate": 0.0667,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 37.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 56,
+          "rate": 0.9333
+        },
+        "no_attack_sequences": 0
+      }
+    },
+    {
+      "threshold": 0.9,
+      "val_a_macro_f1": 0.4712,
+      "val_b_proactive": {
+        "total_eligible": 60,
+        "proactive": {
+          "count": 4,
+          "rate": 0.0667,
+          "median_lead_sec": 25.0,
+          "mean_lead_sec": 25.0,
+          "p90_lead_sec": 37.0
+        },
+        "reactive": {
+          "count": 0,
+          "rate": 0.0,
+          "median_delay_sec": 0.0
+        },
+        "missed": {
+          "count": 56,
+          "rate": 0.9333
+        },
+        "no_attack_sequences": 0
+      }
+    }
+  ],
+  "best_threshold_val_b_metrics": {
+    "total_eligible": 60,
+    "proactive": {
+      "count": 12,
+      "rate": 0.2,
+      "median_lead_sec": 25.0,
+      "mean_lead_sec": 25.0,
+      "p90_lead_sec": 40.0
+    },
+    "reactive": {
+      "count": 0,
+      "rate": 0.0,
+      "median_delay_sec": 0.0
+    },
+    "missed": {
+      "count": 48,
+      "rate": 0.8
+    },
+    "no_attack_sequences": 0
+  }
+}

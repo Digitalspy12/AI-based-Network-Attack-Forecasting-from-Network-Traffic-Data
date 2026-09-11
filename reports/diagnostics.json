@@ -1,0 +1,103 @@
+{
+  "state_distributions": {
+    "train": {
+      "BENIGN": 73707,
+      "RECON": 8298,
+      "INITIAL_ACCESS": 5292,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 898,
+      "IMPACT": 19106
+    },
+    "validation": {
+      "BENIGN": 21720,
+      "RECON": 0,
+      "INITIAL_ACCESS": 1193,
+      "LATERAL_MOVEMENT": 35,
+      "C2": 0,
+      "IMPACT": 0
+    },
+    "test": {
+      "BENIGN": 4863,
+      "RECON": 0,
+      "INITIAL_ACCESS": 0,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 0,
+      "IMPACT": 6424
+    }
+  },
+  "markov_raw_counts": {
+    "BENIGN": {
+      "BENIGN": 68053,
+      "RECON": 112,
+      "INITIAL_ACCESS": 2721,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 496,
+      "IMPACT": 2324
+    },
+    "RECON": {
+      "BENIGN": 112,
+      "RECON": 8186,
+      "INITIAL_ACCESS": 0,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 0,
+      "IMPACT": 0
+    },
+    "INITIAL_ACCESS": {
+      "BENIGN": 2720,
+      "RECON": 0,
+      "INITIAL_ACCESS": 2569,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 0,
+      "IMPACT": 3
+    },
+    "LATERAL_MOVEMENT": {
+      "BENIGN": 0,
+      "RECON": 0,
+      "INITIAL_ACCESS": 0,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 0,
+      "IMPACT": 0
+    },
+    "C2": {
+      "BENIGN": 496,
+      "RECON": 0,
+      "INITIAL_ACCESS": 0,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 402,
+      "IMPACT": 0
+    },
+    "IMPACT": {
+      "BENIGN": 2325,
+      "RECON": 0,
+      "INITIAL_ACCESS": 2,
+      "LATERAL_MOVEMENT": 0,
+      "C2": 0,
+      "IMPACT": 16779
+    }
+  },
+  "markov_row_totals": {
+    "BENIGN": 73706,
+    "RECON": 8298,
+    "INITIAL_ACCESS": 5292,
+    "LATERAL_MOVEMENT": 0,
+    "C2": 898,
+    "IMPACT": 19106
+  },
+  "lstm_k1_pred_distribution": {
+    "BENIGN": 1736,
+    "RECON": 27,
+    "INITIAL_ACCESS": 19,
+    "LATERAL_MOVEMENT": 0,
+    "C2": 1704,
+    "IMPACT": 7777
+  },
+  "lstm_k1_true_distribution": {
+    "BENIGN": 4839,
+    "RECON": 0,
+    "INITIAL_ACCESS": 0,
+    "LATERAL_MOVEMENT": 0,
+    "C2": 0,
+    "IMPACT": 6424
+  },
+  "lstm_k1_macro_f1": 0.2812
+}

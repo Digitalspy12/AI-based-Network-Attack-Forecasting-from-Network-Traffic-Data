@@ -1,0 +1,36 @@
+# DigitalSpy System Configuration
+# Frozen Week-1 parameters - do not change without Change Control process (§30)
+
+project:
+  name: "DigitalSpy"
+  version: "0.1.0"
+  random_seed: 42
+  description: "Predictive Cyber Defence — CIC-IDS2017 prototype"
+
+paths:
+  raw_data: "../MachineLearningCVE"
+  interim_data: "../data/interim"
+  processed_data: "../data/processed"
+  models: "../models"
+  reports: "../reports"
+
+# Frozen windowing parameters
+windowing:
+  window_seconds: 10
+  stride_seconds: 10       # non-overlapping (stride == window)
+  overlap: 0
+  group_by: "source_ip"
+  minimum_flows: 2
+  history_length: 20       # h = 20 windows
+  history_duration_seconds: 200
+
+# Frozen forecast parameters
+forecast:
+  K: 5                     # forecast horizon
+  step_seconds: 10
+  total_horizon_seconds: 50
+
+# Evaluation
+evaluation:
+  headline_metric: "macro_f1"
+  report_accuracy: false   # accuracy is NOT the headline metric

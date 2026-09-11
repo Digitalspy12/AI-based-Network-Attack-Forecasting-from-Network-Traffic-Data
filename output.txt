@@ -1,0 +1,51 @@
+2026-09-11 12:39:33,948 INFO Experiment A: Current detection S_t → Y_t
+2026-09-11 12:39:34,976 INFO LogisticBaseline[binary] fitted on 83,426 samples.
+2026-09-11 12:39:34,977 INFO Saved model to /home/shin/Downloads/AI-bassed Network attack Forecast/models/logistic_current_risk.pkl
+2026-09-11 12:39:35,033 INFO   A1 test Macro-F1=0.5946, FPR=0.2271
+2026-09-11 12:39:38,983 INFO LogisticBaseline[multiclass] fitted on 83,426 samples.
+2026-09-11 12:39:38,984 INFO Saved model to /home/shin/Downloads/AI-bassed Network attack Forecast/models/logistic_current_tactic.pkl
+2026-09-11 12:39:39,011 INFO   A2 test Macro-F1=0.2431
+2026-09-11 12:39:39,012 INFO Experiment B: One-step forecast S_t → Y_{t+1}
+2026-09-11 12:39:39,012 WARNING source_ip/window_start columns not found; building one-step targets from consecutive rows sorted by window_idx.
+2026-09-11 12:39:39,015 WARNING source_ip/window_start columns not found; building one-step targets from consecutive rows sorted by window_idx.
+2026-09-11 12:39:39,017 WARNING source_ip/window_start columns not found; building one-step targets from consecutive rows sorted by window_idx.
+2026-09-11 12:39:39,710 INFO LogisticBaseline[binary] fitted on 83,425 samples.
+2026-09-11 12:39:39,714 INFO Saved model to /home/shin/Downloads/AI-bassed Network attack Forecast/models/logistic_onestep_risk.pkl
+2026-09-11 12:39:39,758 INFO   B1 test Macro-F1=0.6017, FPR=0.2124
+2026-09-11 12:39:46,617 INFO LogisticBaseline[multiclass] fitted on 83,425 samples.
+2026-09-11 12:39:46,619 INFO Saved model to /home/shin/Downloads/AI-bassed Network attack Forecast/models/logistic_onestep_tactic.pkl
+2026-09-11 12:39:46,642 INFO   B2 test Macro-F1=0.2411
+
+============================================================
+LOGISTIC REGRESSION BASELINE METRICS
+============================================================
+
+A1_current_risk_test:
+  macro_f1: 0.5946
+  precision: 0.6129
+  recall: 0.5986
+  fpr: 0.2271
+  positive_rate: 0.4440
+
+A2_current_tactic_test:
+  macro_f1: 0.2431
+  macro_precision: 0.2243
+  macro_recall: 0.2686
+  per_class: (per-class)
+
+B1_onestep_risk_test:
+  macro_f1: 0.6017
+  precision: 0.6232
+  recall: 0.6061
+  fpr: 0.2124
+  positive_rate: 0.4440
+
+B2_onestep_tactic_test:
+  macro_f1: 0.2411
+  macro_precision: 0.2235
+  macro_recall: 0.2650
+  per_class: (per-class)
+
+✓ Phase 3 complete. Metrics saved to /home/shin/Downloads/AI-bassed Network attack Forecast/reports/baseline_metrics.json
+  → B1 LR one-step risk Macro-F1 = 0.6017
+    (LSTM must beat this by ≥5pp to pass Criterion 1)

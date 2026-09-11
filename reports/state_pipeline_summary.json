@@ -1,0 +1,27 @@
+{
+  "train_windows": 107301,
+  "val_windows": 22948,
+  "test_windows": 11287,
+  "train_sequences": 107277,
+  "val_sequences": 22924,
+  "test_sequences": 11263,
+  "feature_dim": 24,
+  "history_length": 20,
+  "K": 5,
+  "z_t_distribution_train": {
+    "BENIGN": 73707,
+    "IMPACT": 19106,
+    "RECON": 8298,
+    "INITIAL_ACCESS": 5292,
+    "C2": 898
+  },
+  "z_t_distribution_val": {
+    "BENIGN": 21720,
+    "INITIAL_ACCESS": 1193,
+    "LATERAL_MOVEMENT": 35
+  },
+  "z_t_distribution_test": {
+    "IMPACT": 6424,
+    "BENIGN": 4863
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "experiment": "Phase 7.4 \u2014 Advanced Delta-Augmented LSTM",
+  "augmented_input_size": 120,
+  "threshold": 0.3,
+  "best_epoch": 1,
+  "best_val_loss": 3.269696,
+  "test_k1_macro_f1": 0.7812,
+  "test_per_horizon_f1": {
+    "k1": 0.7812,
+    "k2": 0.7781,
+    "k3": 0.7801,
+    "k4": 0.7783,
+    "k5": 0.7807
+  },
+  "val_b_proactive_metrics": {
+    "total": 60,
+    "proactive": {
+      "count": 13,
+      "rate": 0.2167,
+      "median_lead_sec": 30.0,
+      "mean_lead_sec": 27.7
+    },
+    "reactive": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "missed": {
+      "count": 47,
+      "rate": 0.7833
+    }
+  },
+  "baseline_comparison": {
+    "original_pdr": 0.2,
+    "augmented_pdr": 0.2167,
+    "pdr_improvement_pp": 1.67
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "experiment": "Phase 7.3 \u2014 Pre-Attack Feature Analysis",
+  "group_A_size": 1281,
+  "group_B_size": 20415,
+  "lstm_probability_separation": {
+    "group_A_mean": 0.0761,
+    "group_A_median": 0.0483,
+    "group_B_mean": 0.2255,
+    "group_B_median": 0.0573,
+    "mann_whitney_p": 1.0,
+    "cohens_d": -0.4418
+  },
+  "feature_analysis": [
+    {
+      "feature": "flow_count",
+      "mean_preattack": 0.0,
+      "mean_benign": 0.0,
+      "cohens_d": 0.0,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "total_bytes",
+      "mean_preattack": 0.015436,
+      "mean_benign": -0.004125,
+      "cohens_d": 0.0993,
+      "p_value": 1.1448546644032831e-07,
+      "significant_001": true
+    },
+    {
+      "feature": "total_packets",
+      "mean_preattack": 0.013984,
+      "mean_benign": -0.002269,
+      "cohens_d": 0.0833,
+      "p_value": 3.860054054172224e-09,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_flow_duration",
+      "mean_preattack": -0.127637,
+      "mean_benign": -0.206785,
+      "cohens_d": 0.3425,
+      "p_value": 3.2122295900626664e-30,
+      "significant_001": true
+    },
+    {
+      "feature": "bytes_per_sec",
+      "mean_preattack": -0.012257,
+      "mean_benign": 0.003714,
+      "cohens_d": -0.2677,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "packets_per_sec",
+      "mean_preattack": -0.144278,
+      "mean_benign": 0.331409,
+      "cohens_d": -0.4102,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "syn_ratio",
+      "mean_preattack": -0.103138,
+      "mean_benign": -0.109977,
+      "cohens_d": 0.0192,
+      "p_value": 0.0029617527034133673,
+      "significant_001": false
+    },
+    {
+      "feature": "ack_ratio",
+      "mean_preattack": -0.192293,
+      "mean_benign": -0.302771,
+      "cohens_d": 0.1636,
+      "p_value": 4.277187111434433e-12,
+      "significant_001": true
+    },
+    {
+      "feature": "fin_ratio",
+      "mean_preattack": -0.316907,
+      "mean_benign": -0.276266,
+      "cohens_d": -0.2159,
+      "p_value": 0.005549578927457333,
+      "significant_001": false
+    },
+    {
+      "feature": "rst_ratio",
+      "mean_preattack": 0.028301,
+      "mean_benign": 0.004567,
+      "cohens_d": 0.1199,
+      "p_value": 0.9096174240112305,
+      "significant_001": false
+    },
+    {
+      "feature": "psh_ratio",
+      "mean_preattack": -0.094874,
+      "mean_benign": 0.238784,
+      "cohens_d": -0.4164,
+      "p_value": 1.578264248345872e-17,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_iat",
+      "mean_preattack": -0.147047,
+      "mean_benign": -0.261588,
+      "cohens_d": 0.4169,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "std_iat",
+      "mean_preattack": -0.202649,
+      "mean_benign": -0.286574,
+      "cohens_d": 0.7474,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "max_iat",
+      "mean_preattack": -0.086566,
+      "mean_benign": -0.288358,
+      "cohens_d": 0.5984,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_packet_len",
+      "mean_preattack": -0.232694,
+      "mean_benign": -0.294773,
+      "cohens_d": 0.2417,
+      "p_value": 1.6703299479559064e-05,
+      "significant_001": true
+    },
+    {
+      "feature": "std_packet_len",
+      "mean_preattack": -0.274901,
+      "mean_benign": -0.303555,
+      "cohens_d": 0.2014,
+      "p_value": 0.0001095618717954494,
+      "significant_001": true
+    },
+    {
+      "feature": "distinct_dst_ips",
+      "mean_preattack": -0.161115,
+      "mean_benign": 0.215313,
+      "cohens_d": -0.3755,
+      "p_value": 7.900794424297047e-19,
+      "significant_001": true
+    },
+    {
+      "feature": "distinct_dst_ports",
+      "mean_preattack": -0.161115,
+      "mean_benign": 0.215313,
+      "cohens_d": -0.3755,
+      "p_value": 7.900794424297047e-19,
+      "significant_001": true
+    },
+    {
+      "feature": "distinct_src_ports_used",
+      "mean_preattack": 0.0,
+      "mean_benign": 0.0,
+      "cohens_d": 0.0,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "fwd_bwd_byte_ratio",
+      "mean_preattack": -0.027767,
+      "mean_benign": -0.018425,
+      "cohens_d": -0.1377,
+      "p_value": 1.5372715346524898e-18,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_init_win_bytes_fwd",
+      "mean_preattack": -0.103533,
+      "mean_benign": -0.186851,
+      "cohens_d": 0.1883,
+      "p_value": 5.919422511730767e-24,
+      "significant_001": true
+    },
+    {
+      "feature": "ttl_variance",
+      "mean_preattack": 0.0,
+      "mean_benign": 0.0,
+      "cohens_d": 0.0,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "tcp_window_std",
+      "mean_preattack": 0.0,
+      "mean_benign": 0.0,
+      "cohens_d": 0.0,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "fragmentation_ratio",
+      "mean_preattack": 0.0,
+      "mean_benign": 0.0,
+      "cohens_d": 0.0,
+      "p_value": 0.0,
+      "significant_001": true
+    }
+  ],
+  "top_discriminative_features": [
+    {
+      "feature": "std_iat",
+      "mean_preattack": -0.202649,
+      "mean_benign": -0.286574,
+      "cohens_d": 0.7474,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "max_iat",
+      "mean_preattack": -0.086566,
+      "mean_benign": -0.288358,
+      "cohens_d": 0.5984,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_iat",
+      "mean_preattack": -0.147047,
+      "mean_benign": -0.261588,
+      "cohens_d": 0.4169,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "psh_ratio",
+      "mean_preattack": -0.094874,
+      "mean_benign": 0.238784,
+      "cohens_d": -0.4164,
+      "p_value": 1.578264248345872e-17,
+      "significant_001": true
+    },
+    {
+      "feature": "packets_per_sec",
+      "mean_preattack": -0.144278,
+      "mean_benign": 0.331409,
+      "cohens_d": -0.4102,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "distinct_dst_ips",
+      "mean_preattack": -0.161115,
+      "mean_benign": 0.215313,
+      "cohens_d": -0.3755,
+      "p_value": 7.900794424297047e-19,
+      "significant_001": true
+    },
+    {
+      "feature": "distinct_dst_ports",
+      "mean_preattack": -0.161115,
+      "mean_benign": 0.215313,
+      "cohens_d": -0.3755,
+      "p_value": 7.900794424297047e-19,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_flow_duration",
+      "mean_preattack": -0.127637,
+      "mean_benign": -0.206785,
+      "cohens_d": 0.3425,
+      "p_value": 3.2122295900626664e-30,
+      "significant_001": true
+    },
+    {
+      "feature": "bytes_per_sec",
+      "mean_preattack": -0.012257,
+      "mean_benign": 0.003714,
+      "cohens_d": -0.2677,
+      "p_value": 0.0,
+      "significant_001": true
+    },
+    {
+      "feature": "mean_packet_len",
+      "mean_preattack": -0.232694,
+      "mean_benign": -0.294773,
+      "cohens_d": 0.2417,
+      "p_value": 1.6703299479559064e-05,
+      "significant_001": true
+    }
+  ],
+  "summary": {
+    "n_significant_medium_effect": 11,
+    "n_large_effect": 2
+  }
+}

@@ -1,0 +1,62 @@
+# Train / Validation / Test Split Configuration
+#
+# Experiment B — Class-covered temporal split (primary benchmark)
+# ---------------------------------------------------------------
+# Problem with original Mon-Wed / Thu / Fri split (Experiment A):
+#   RECON (PortScan) and C2 (Bot) appear ONLY in Friday files.
+#   Training had zero examples of these classes → LSTM/Markov cannot
+#   learn them → class-absent evaluation (diagnosed 2026-09-11).
+#
+# Fix: Move entire Friday-Morning (C2/Bot) and Friday-PortScan (RECON)
+#   blocks into training. Keep Friday-DDos (IMPACT/BENIGN) as the
+#   held-out test. Thursday files provide validation coverage.
+#
+# Rule: Entire source-file blocks are moved — NO individual window
+#   extraction across boundaries (avoids temporal contamination).
+#
+# Class coverage after fix:
+#   TRAIN:      BENIGN, INITIAL_ACCESS, LATERAL_MOVEMENT, C2, IMPACT, RECON ✅
+#   VALIDATION: BENIGN, INITIAL_ACCESS, LATERAL_MOVEMENT ✅
+#   TEST:       BENIGN, IMPACT ✅  (DDoS-only; intentionally smaller scope)
+#
+# Experiment A (original chronological split) is preserved as an
+#   unseen-class generalisation experiment in reports/experiment_a_metrics.
+#
+# Timeline (chronological within each split):
+#   Train:  Mon → Tue → Wed → Fri-Morning → Fri-PortScan
+#   Val:    Thu-Morning → Thu-Afternoon
+#   Test:   Fri-DDos
+
+splits:
+  train:
+    files:
+      - "Monday-WorkingHours.pcap_ISCX.csv"           # BENIGN
+      - "Tuesday-WorkingHours.pcap_ISCX.csv"           # BENIGN + INITIAL_ACCESS (FTP/SSH-Patator)
+      - "Wednesday-workingHours.pcap_ISCX.csv"         # BENIGN + IMPACT (DoS variants)
+      - "Friday-WorkingHours-Morning.pcap_ISCX.csv"    # BENIGN + C2 (Bot)       ← added
+      - "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv"  # BENIGN + RECON ← added
+    description: >
+      Experiment B train: BENIGN + INITIAL_ACCESS (FTP/SSH-Patator) +
+      IMPACT (DoS) + C2 (Bot) + RECON (PortScan).
+      All 6 tactic classes have training support.
+
+  validation:
+    files:
+      - "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv"      # BENIGN + INITIAL_ACCESS
+      - "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv" # BENIGN + LATERAL_MOVEMENT
+    description: >
+      Experiment B validation: BENIGN + INITIAL_ACCESS (Web Attacks) +
+      LATERAL_MOVEMENT (Infiltration).
+
+  test:
+    files:
+      - "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"  # BENIGN + IMPACT (DDoS)
+    description: >
+      Experiment B test: BENIGN + IMPACT (DDoS). Held-out scenario.
+      NOTE: Smaller test set by design — DDoS is a high-stakes known class.
+      Experiment A results (original Fri 3-file test) archived separately.
+
+# Preprocessing rules — unchanged: fit ONLY on training data
+preprocessing:
+  fit_on: "train"
+  transform: ["train", "validation", "test"]

@@ -1,0 +1,25 @@
+# Markov World Model Configuration
+# Frozen Week-1 parameters
+
+model:
+  name: "markov"
+  num_states: 6
+  K: 5                     # forecast horizon steps
+
+states:
+  - BENIGN
+  - RECON
+  - INITIAL_ACCESS
+  - LATERAL_MOVEMENT
+  - C2
+  - IMPACT
+
+# Laplace smoothing to avoid zero-probability transitions
+smoothing:
+  method: "laplace"
+  alpha: 1.0
+
+output:
+  matrix_file: "models/markov_matrix.npy"
+  report_csv: "reports/markov_transition_matrix.csv"
+  metrics_json: "reports/markov_metrics.json"
