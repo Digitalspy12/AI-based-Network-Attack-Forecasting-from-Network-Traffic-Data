@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Phase 5 — Train Attention-LSTM.
+"""Phase 8E — Train Attention-LSTM with Pre-Attack Objective.
 
-Trains the frozen Attention-LSTM architecture on 20×24 sequences.
+Trains the frozen Attention-LSTM architecture on 20×24 (or 20x36) sequences using Y_pre target.
 Outputs:
-    models/lstm_checkpoint.pt
-    reports/lstm_val_curves.json
-    reports/lstm_metrics.json
+    models/lstm_pre_attack_checkpoint.pt
+    reports/lstm_pre_attack_val_curves.json
+    reports/lstm_pre_attack_metrics.json
 """
 import json
 import logging
 import sys
-import argparse
 from pathlib import Path
 
 import numpy as np
@@ -22,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 from digitalspy import config
 from digitalspy.models.attention_lstm import build_model
 from digitalspy.models.trainer import train
+from digitalspy.data.pre_attack_labels import generate_pre_attack_labels
 
 logging.basicConfig(
     level=logging.INFO,
@@ -30,13 +30,21 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def load_sequences(tag: str, processed_dir: Path) -> tuple:
+def load_pre_attack_sequences(tag: str, processed_dir: Path) -> tuple:
     path = processed_dir / f"{tag}_sequences.npz"
     if not path.exists():
         logger.error(f"{path} not found. Run build_states.py first.")
         sys.exit(1)
     data = np.load(path)
-    return data["X"], data["y_risk"], data["y_tactic"]
+    X, y_risk, y_tactic = data["X"], data["y_risk"], data["y_tactic"]
+    
+    if len(y_risk) > 0:
+        current_risk = np.concatenate([[0.0], y_risk[:-1, 0]])
+        y_pre = generate_pre_attack_labels(y_risk, current_risk)
+    else:
+        y_pre = y_risk.copy()
+        
+    return X, y_pre, y_tactic
 
 
 def evaluate_lstm(model, X, y_risk, y_tactic, K, num_classes, device, label):
@@ -82,10 +90,6 @@ def evaluate_lstm(model, X, y_risk, y_tactic, K, num_classes, device, label):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--reg", action="store_true", help="Run controlled regularization study (Phase 8F)")
-    args = parser.parse_args()
-
     processed_dir = config.resolve_path("processed_data")
     models_dir = config.resolve_path("models")
     reports_dir = config.resolve_path("reports")
@@ -93,20 +97,13 @@ def main():
     reports_dir.mkdir(parents=True, exist_ok=True)
 
     lstm_cfg = config.lstm()
-    
-    if args.reg:
-        logger.info("Running Phase 8F Controlled Regularization Study")
-        lstm_cfg["training"]["learning_rate"] = 1e-4
-        lstm_cfg["training"]["weight_decay"] = 1e-4
-        lstm_cfg["architecture"]["dropout"] = 0.3
-        
     K = lstm_cfg["forecast"]["K"]
     num_classes = lstm_cfg["forecast"]["heads"]["tactic"]["num_classes"]
 
     # Load sequences
-    X_tr, yr_tr, yt_tr = load_sequences("train", processed_dir)
-    X_va, yr_va, yt_va = load_sequences("val", processed_dir)
-    X_te, yr_te, yt_te = load_sequences("test", processed_dir)
+    X_tr, yr_tr, yt_tr = load_pre_attack_sequences("train", processed_dir)
+    X_va, yr_va, yt_va = load_pre_attack_sequences("val", processed_dir)
+    X_te, yr_te, yt_te = load_pre_attack_sequences("test", processed_dir)
 
     logger.info(f"Train: {len(X_tr):,} seqs | Val: {len(X_va):,} | Test: {len(X_te):,}")
 
@@ -119,12 +116,8 @@ def main():
     lstm_cfg["architecture"]["input_size"] = input_size
     
     # Train
-    if args.reg:
-        checkpoint_path = models_dir / "lstm_reg_checkpoint.pt"
-        val_curves_path = reports_dir / "lstm_reg_val_curves.json"
-    else:
-        checkpoint_path = models_dir / "lstm_checkpoint.pt"
-        val_curves_path = reports_dir / "lstm_val_curves.json"
+    checkpoint_path = models_dir / "lstm_pre_attack_checkpoint.pt"
+    val_curves_path = reports_dir / "lstm_pre_attack_val_curves.json"
 
     model, curves = train(
         X_tr, yr_tr, yt_tr,
@@ -148,16 +141,12 @@ def main():
         "best_val_loss": round(curves["best_val_loss"], 6),
     }
 
-    if args.reg:
-        report_path = reports_dir / "experiment_8f_regularization.json"
-    else:
-        report_path = reports_dir / "lstm_metrics.json"
-        
+    report_path = reports_dir / "lstm_pre_attack_metrics.json"
     with open(report_path, "w") as f:
         json.dump(all_metrics, f, indent=2)
 
     print("\n" + "=" * 60)
-    print("ATTENTION-LSTM EVALUATION")
+    print("PRE-ATTACK OBJECTIVE EVALUATION (PHASE 8E)")
     print("=" * 60)
     print(f"\nTest k=1 risk macro-F1: {test_metrics['k1_risk_f1']:.4f}")
     print(f"Test F1_K tactic:       {test_metrics['F1_K_tactic']:.4f}")

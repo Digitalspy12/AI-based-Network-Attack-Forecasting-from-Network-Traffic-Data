@@ -1,0 +1,23 @@
+{
+  "packet_state_build": {
+    "total_packets_processed": 2000000,
+    "unique_hosts": 1615,
+    "host_window_rows": 18675,
+    "time_range_hours": 0.51,
+    "output_path": "/home/shin/Downloads/AI-bassed Network attack Forecast/DigitalSpy/data/interim/packet_state.parquet",
+    "feature_names": [
+      "pk_ttl_mean",
+      "pk_ttl_std",
+      "pk_ttl_min",
+      "pk_ttl_max",
+      "pk_tcp_win_mean",
+      "pk_tcp_win_std",
+      "pk_frag_ratio",
+      "pk_payload_mean",
+      "pk_payload_std",
+      "pk_payload_max",
+      "pk_retx_ratio",
+      "pk_scan_score"
+    ]
+  }
+}

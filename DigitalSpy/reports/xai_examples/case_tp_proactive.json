@@ -1,0 +1,47 @@
+{
+  "sequence_id": 9601,
+  "forecast_probabilities": 1.0,
+  "top_features": {
+    "top_features": [
+      "std_packet_len",
+      "ack_ratio",
+      "syn_ratio",
+      "distinct_dst_ips",
+      "psh_ratio"
+    ],
+    "feature_contributions": {
+      "std_packet_len": 0.014205908932954713,
+      "ack_ratio": 0.006765704033066751,
+      "syn_ratio": 0.005047827319100697,
+      "distinct_dst_ips": 0.0023970550994139575,
+      "psh_ratio": 0.0020853948509507282
+    },
+    "xai_note": "SHAP values averaged over 20-window history. Indicates model focus, not causality."
+  },
+  "attention_weights": [
+    8.175080612460306e-10,
+    9.746572438018575e-10,
+    9.610064966025789e-10,
+    3.052157637739583e-08,
+    2.4489884253853234e-06,
+    0.00017702396144159138,
+    0.004471408203244209,
+    0.018006600439548492,
+    0.03792988508939743,
+    0.05077070742845535,
+    0.061718299984931946,
+    0.06570643186569214,
+    0.07071200758218765,
+    0.07109934091567993,
+    0.08826196938753128,
+    0.12268157303333282,
+    0.14128725230693817,
+    0.11655893176794052,
+    0.08479277044534683,
+    0.06582333892583847
+  ],
+  "ground_truth_k1": 1,
+  "current_state": "BENIGN",
+  "outcome": "TP_PROACTIVE",
+  "evidence_summary": "Model predicts ATTACK. Top feature: std_packet_len. "
+}

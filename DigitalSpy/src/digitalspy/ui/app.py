@@ -33,10 +33,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from digitalspy import config
 from digitalspy.states.labels import index_to_label, is_attack
 
-ROOT = Path(__file__).resolve().parents[3]
-MODELS_DIR = ROOT / "models"
-REPORTS_DIR = ROOT / "reports"
-PROCESSED_DIR = ROOT / "data" / "processed"
+MODELS_DIR = config.resolve_path("models")
+REPORTS_DIR = config.resolve_path("reports")
+PROCESSED_DIR = config.resolve_path("processed_data")
 
 # ── Page Config ──────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -270,14 +269,14 @@ with st.sidebar:
 
     mode = st.radio(
         "Input Mode",
-        ["Demo — Test Host", "Upload CSV"],
-        help="Select a pre-processed test host or upload a new CSV.",
+        ["Demo — Test Sequence", "Upload File"],
+        help="Select a pre-processed test sequence or upload a new CSV or PCAP.",
     )
 
     st.markdown("---")
     st.markdown("### 📊 Navigation")
     show_evidence = st.checkbox("Show XAI Evidence", value=True)
-    show_agent = st.checkbox("Show AI Agent Summary", value=True)
+    show_agent = st.checkbox("Show AI Agent Summary", value=False)
     show_whatif = st.checkbox("Show What-If Simulation", value=True)
     show_benchmark = st.checkbox("Show Benchmark Comparison", value=True)
 
@@ -326,43 +325,107 @@ history_tensor = None
 current_z_t = None
 host_windows = None
 
-if mode == "Demo — Test Host" and len(test_windows) > 0:
+if mode == "Demo — Test Sequence" and len(test_windows) >= 20:
     from digitalspy.features.engineer import FEATURE_NAMES
 
-    available_hosts = sorted(test_windows["source_ip"].unique())
-    selected_host = st.selectbox(
-        "Select source host IP",
-        available_hosts,
-        help="Choose a host from the CIC-IDS2017 test set (Friday).",
-    )
+    max_idx = len(test_windows) - 20
+    
+    # Pick an index that is known to contain attacks if possible, otherwise random.
+    # We can provide a slider for the user to select the starting window.
+    start_idx = st.slider("Select starting window index", 0, max_idx, value=min(1000, max_idx))
 
-    host_w = test_windows[test_windows["source_ip"] == selected_host].sort_values("window_start")
+    last_20 = test_windows.iloc[start_idx : start_idx + 20].reset_index(drop=True)
+    history_np = last_20[FEATURE_NAMES].values.astype(np.float32)
+    history_tensor = torch.FloatTensor(history_np).unsqueeze(0)  # (1, 20, 24)
+    current_z_t = last_20["z_t"].iloc[-1]
 
-    if len(host_w) >= 20:
-        last_20 = host_w.tail(20).reset_index(drop=True)
-        history_np = last_20[FEATURE_NAMES].values.astype(np.float32)
-        history_tensor = torch.FloatTensor(history_np).unsqueeze(0)  # (1, 20, 24)
-        current_z_t = last_20["z_t"].iloc[-1]
-        host_windows = host_w
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("Sequence Start", f"Window {start_idx}")
+    with c2:
+        st.metric("Windows Available", f"{len(test_windows)}")
+    with c3:
+        st.metric("Current State", f"{TACTIC_EMOJI.get(current_z_t, '❓')} {current_z_t}")
 
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.metric("Source Host", selected_host)
-        with c2:
-            st.metric("Windows Available", f"{len(host_w)}")
-        with c3:
-            st.metric("Current State", f"{TACTIC_EMOJI.get(current_z_t, '❓')} {current_z_t}")
-    else:
-        st.warning(f"Host {selected_host} has only {len(host_w)} windows (need ≥20). Select another host.")
-
-elif mode == "Upload CSV":
+elif mode == "Upload File":
     uploaded = st.file_uploader(
-        "Upload a CIC-IDS2017 CSV file",
-        type="csv",
+        "Upload a CIC-IDS2017 CSV or PCAP file",
+        type=["csv", "pcap"],
         help="The file will be processed through the feature engineering pipeline.",
     )
     if uploaded:
-        st.info("CSV upload processing requires the full pipeline. Coming in Phase 9 full implementation.")
+        import tempfile
+        import os
+        from digitalspy.states.windowing import build_state_windows
+        from digitalspy.features.engineer import FEATURE_NAMES
+        
+        ext = uploaded.name.split('.')[-1].lower()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as tmp:
+            tmp.write(uploaded.getvalue())
+            tmp_path = tmp.name
+            
+        with st.spinner(f"Processing uploaded {ext.upper()} file..."):
+            try:
+                if ext == "csv":
+                    df = pd.read_csv(tmp_path)
+                    # Fake timestamp if missing
+                    if 'Timestamp' not in df.columns and ' Timestamp' not in df.columns:
+                        df["Timestamp"] = pd.to_datetime("now")
+                    
+                    state_df = build_state_windows(df, split_tag="demo")
+                    
+                    if not state_df.empty:
+                        if len(state_df) >= 20:
+                            last_20 = state_df.tail(20).reset_index(drop=True)
+                            history_np = last_20[FEATURE_NAMES].values.astype(np.float32)
+                            
+                            # Match model input size
+                            model_input_size = lstm_cfg["architecture"]["input_size"]
+                            if history_np.shape[-1] != model_input_size:
+                                history_np = np.pad(history_np, ((0,0), (0, max(0, model_input_size - history_np.shape[-1]))))[:, :model_input_size]
+                                
+                            history_tensor = torch.FloatTensor(history_np).unsqueeze(0)
+                            current_z_t = last_20["z_t"].iloc[-1]
+                            
+                            st.success(f"Successfully processed CSV. Extracted {len(state_df)} windows.")
+                        else:
+                            st.error(f"Generated {len(state_df)} windows. Need at least 20.")
+                    else:
+                        st.error("No valid windows generated from CSV.")
+                        
+                elif ext == "pcap":
+                    from scripts.build_packet_state import process_pcap_interval
+                    from digitalspy.features.fusion import fuse_flow_packet
+                    
+                    st.info("Parsing PCAP (streaming) limit 100k packets...")
+                    packet_df = process_pcap_interval(tmp_path, max_packets=100000)
+                    
+                    if not packet_df.empty:
+                        st.success("Extracted packet features! Fusing with zero-imputed flows for demo.")
+                        dummy_flow = packet_df[["host_ip", "window_start"]].copy()
+                        dummy_flow["z_t"] = "BENIGN"
+                        for f in FEATURE_NAMES:
+                            dummy_flow[f] = 0.0
+                        fused = fuse_flow_packet(dummy_flow, packet_df)
+                        
+                        if len(fused) >= 20:
+                            host_w = fused.sort_values("window_start").tail(20)
+                            history_np = host_w.drop(columns=["host_ip", "window_start", "z_t", "packet_coverage", "z_t_idx"]).values.astype(np.float32)
+                            
+                            model_input_size = lstm_cfg["architecture"]["input_size"]
+                            if history_np.shape[-1] != model_input_size:
+                                history_np = np.pad(history_np, ((0,0), (0, max(0, model_input_size - history_np.shape[-1]))))[:, :model_input_size]
+                                
+                            history_tensor = torch.FloatTensor(history_np).unsqueeze(0)
+                            current_z_t = host_w["z_t"].iloc[-1]
+                        else:
+                            st.error(f"Not enough PCAP windows to form a sequence. Got {len(fused)}, need 20.")
+                    else:
+                        st.error("No valid packets found in PCAP.")
+            except Exception as e:
+                st.error(f"Error processing file: {e}")
+            finally:
+                os.remove(tmp_path)
 else:
     if len(test_windows) == 0:
         st.info("No test data available. Run the pipeline first.")
@@ -397,7 +460,7 @@ with col_state:
     current_risk = float(risk_np[0])
     st.markdown(
         f'<div class="metric-card">'
-        f'<div class="label">Current Z_t</div>'
+        f'<div class="label">Current Z_t [OBSERVED]</div>'
         f'<div class="value">{TACTIC_EMOJI.get(current_z_t, "❓")} {current_z_t}</div>'
         f'</div>',
         unsafe_allow_html=True,
@@ -462,7 +525,7 @@ for k, col in enumerate(tactic_cols):
         t_prob = float(tactic_np[k, np.argmax(tactic_np[k])])
         st.markdown(
             f'<div class="metric-card" style="text-align:center;">'
-            f'<div class="label">t+{k+1} (+{(k+1)*10}s)</div>'
+            f'<div class="label">t+{k+1} (+{(k+1)*10}s) [FORECAST]</div>'
             f'<div style="font-size:1.5rem; margin:4px 0;">{TACTIC_EMOJI.get(t_label, "❓")}</div>'
             f'<div style="font-size:0.85rem; font-weight:600; color:{tactic_color(t_label)};">{t_label}</div>'
             f'<div style="font-size:0.75rem; color:#7ecfdf;">{t_prob:.1%}</div>'
@@ -536,18 +599,28 @@ if show_evidence:
         st.caption("Most influential features for the t+1 risk forecast. "
                    "Influence ≠ causation.")
 
-        # Approximate feature importance via input variance × attention weighting
-        history_values = history_tensor.squeeze(0).numpy()  # (20, 24)
-        feature_variance = np.var(history_values, axis=0)   # (24,)
-        attention_weighted = np.dot(alpha_np, np.abs(history_values))  # (24,)
-        importance = feature_variance * 0.5 + attention_weighted * 0.5
-        importance = importance / (importance.sum() + 1e-9)
-
+        # Real SHAP via shap_explainer
+        from digitalspy.explainability.shap_explainer import explain_lstm
         from digitalspy.features.engineer import FEATURE_NAMES
-        feat_df = pd.DataFrame({
-            "feature": FEATURE_NAMES,
-            "importance": importance,
-        }).sort_values("importance", ascending=True).tail(12)
+        
+        feature_names = FEATURE_NAMES
+        model_input_size = lstm_cfg["architecture"]["input_size"]
+        if model_input_size == 36:
+            feature_names = FEATURE_NAMES + ["ttl_mean", "ttl_std", "ttl_min", "ttl_max", "tcp_win_mean", "tcp_win_std", "frag_rate", "payload_mean", "payload_std", "payload_max", "retx_flag", "scan_sig"]
+            
+        history_values = history_tensor.numpy()
+        bg = np.zeros((50, 20, model_input_size), dtype=np.float32)
+        
+        shap_res = explain_lstm(lstm_model, bg, history_values, feature_names, top_k=12, device="cpu")
+        
+        if shap_res and "feature_contributions" in shap_res:
+            contribs = shap_res["feature_contributions"]
+            feat_df = pd.DataFrame({
+                "feature": list(contribs.keys()),
+                "importance": list(contribs.values())
+            }).sort_values("importance", ascending=True)
+        else:
+            feat_df = pd.DataFrame({"feature": feature_names[:12], "importance": [0]*12})
 
         fig_shap = go.Figure(go.Bar(
             x=feat_df["importance"],
@@ -657,7 +730,7 @@ if show_whatif:
     col_feat, col_val = st.columns([2, 1])
     with col_feat:
         whatif_feature = st.selectbox("Feature to modify", FEATURE_NAMES, key="whatif_feat")
-    with col_col2 := col_val:
+    with col_val:
         feat_idx = FEATURE_NAMES.index(whatif_feature)
         original_val = float(history_tensor[0, -1, feat_idx].item())
         new_val = st.number_input(
@@ -728,22 +801,7 @@ if show_whatif:
                     unsafe_allow_html=True,
                 )
 
-        if show_agent and st.button("🤖 Explain Scenario with AI", key="whatif_agent"):
-            with st.spinner("AI analysing scenario…"):
-                try:
-                    from digitalspy.agent.agent import DigitalSpyAgent
-                    agent = DigitalSpyAgent(model="qwen2.5:7b")
-                    explanation = agent.run_what_if(
-                        baseline_forecast={"risk": risk_np.tolist(), "tactic_labels": tactic_labels},
-                        scenario_forecast={"risk": risk_mod_np.tolist(), "tactic_labels": tactic_mod_labels},
-                        modified_feature=whatif_feature,
-                        original_value=original_val,
-                        new_value=float(new_val),
-                    )
-                    st.markdown('<div class="agent-output">' + explanation.replace('\n', '<br>') + '</div>',
-                                unsafe_allow_html=True)
-                except Exception as e:
-                    st.error(f"Agent error: {e}")
+        # No AI what-if explanation logic per Phase 8C requirement
 
 
 # ── Panel 9: Benchmark Comparison ─────────────────────────────────────────────

@@ -42,7 +42,7 @@ splits:
 
   validation:
     files:
-      - "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv"      # BENIGN + INITIAL_ACCESS
+      - "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"            # BENIGN + IMPACT (DDoS)
       - "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv" # BENIGN + LATERAL_MOVEMENT
     description: >
       Experiment B validation: BENIGN + INITIAL_ACCESS (Web Attacks) +
@@ -50,7 +50,7 @@ splits:
 
   test:
     files:
-      - "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"  # BENIGN + IMPACT (DDoS)
+      - "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv"      # BENIGN + INITIAL_ACCESS (Web Attacks)
     description: >
       Experiment B test: BENIGN + IMPACT (DDoS). Held-out scenario.
       NOTE: Smaller test set by design — DDoS is a high-stakes known class.

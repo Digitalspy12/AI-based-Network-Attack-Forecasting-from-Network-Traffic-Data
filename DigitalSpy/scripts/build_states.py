@@ -15,6 +15,7 @@ Pipeline:
 
 CRITICAL: scaler/imputer fitted on training data only. (§8, §30)
 """
+import argparse
 import json
 import logging
 import sys
@@ -42,6 +43,15 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Phase 2 — Build State Windows.")
+    parser.add_argument(
+        "--mode",
+        choices=["flow", "flow_packet"],
+        default="flow",
+        help="Feature mode to build. 'flow' uses CSVs only. 'flow_packet' fuses PCAP data.",
+    )
+    args = parser.parse_args()
+
     sys_cfg = config.system()
     raw_dir = config.resolve_path("raw_data")
     processed_dir = config.resolve_path("processed_data")
@@ -81,9 +91,27 @@ def main():
 
     # ── Phase 2e: Save combined state windows ──────────────────────────────
     all_windows = pd.concat([train_scaled, val_scaled, test_scaled], ignore_index=True)
-    state_path = processed_dir / "state_windows.parquet"
+
+    if args.mode == "flow_packet":
+        logger.info("Fusing packet features with flow state...")
+        from digitalspy.features.fusion import fuse_flow_packet
+        
+        # Load packet_state.parquet (built by build_packet_state.py)
+        interim_dir = Path(__file__).resolve().parent.parent / "data" / "interim"
+        packet_state_path = interim_dir / "packet_state.parquet"
+        if not packet_state_path.exists():
+            logger.error(f"Packet state file not found: {packet_state_path}. Run build_packet_state.py first.")
+            sys.exit(1)
+            
+        packet_df = pd.read_parquet(packet_state_path)
+        all_windows = fuse_flow_packet(all_windows, packet_df)
+        
+        state_path = processed_dir / "fused_state_windows.parquet"
+    else:
+        state_path = processed_dir / "state_windows.parquet"
+
     all_windows.to_parquet(state_path, index=False)
-    logger.info(f"✓ Saved state_windows.parquet: {len(all_windows):,} rows → {state_path}")
+    logger.info(f"✓ Saved state windows: {len(all_windows):,} rows → {state_path}")
 
     # ── Phase 2f: Build LSTM sequences ─────────────────────────────────────
     logger.info("Building LSTM sequences (history=20, K=5, discard-on-gap)…")

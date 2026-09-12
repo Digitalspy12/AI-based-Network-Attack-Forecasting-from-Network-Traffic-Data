@@ -1,0 +1,83 @@
+# Packet Feature Contract — Phase 8A
+# All features in this file are derived from real PCAP packet data only.
+# Do NOT impute from flow CSV columns.  If PCAP coverage is unavailable,
+# record has_packet_features=false and leave all values as 0.0.
+
+window_seconds: 10       # Must match flow pipeline (system.yaml windowing.window_seconds)
+source: pcap             # Must be 'pcap'; never 'csv' or 'imputed'
+
+feature_groups:
+  ttl_statistics:
+    description: "IP Time-To-Live field statistics across packets in the window"
+    features:
+      - pk_ttl_mean      # mean TTL value
+      - pk_ttl_std       # std dev of TTL — high variance may indicate spoofing
+      - pk_ttl_min       # minimum TTL (probes reaching near-endpoint)
+      - pk_ttl_max       # maximum TTL
+
+  tcp_window_statistics:
+    description: "TCP receive window size statistics (TCP only)"
+    features:
+      - pk_tcp_win_mean  # mean TCP window size
+      - pk_tcp_win_std   # std dev — large swings may indicate flow control issues
+
+  fragmentation:
+    description: "IP fragmentation indicators"
+    features:
+      - pk_frag_ratio    # fraction of packets with MF flag set or frag_offset > 0
+
+  payload_size:
+    description: "L4 payload length distribution"
+    features:
+      - pk_payload_mean  # mean payload length in bytes
+      - pk_payload_std   # std dev
+      - pk_payload_max   # max payload length
+
+  retransmission:
+    description: "TCP retransmission / repeated-handshake indicator"
+    features:
+      - pk_retx_ratio    # SYN-ACK count / total TCP packets
+                         # heuristic: high value indicates repeated handshake responses
+
+  port_scan_signature:
+    description: "Single-source → many-destination-port behaviour"
+    features:
+      - pk_scan_score    # distinct_dst_ports(src_ip) / total_src_packets
+                         # approaches 1.0 for a pure horizontal scan
+
+# Ordered feature list (must match PACKET_FEATURE_NAMES in packet_features.py)
+feature_names:
+  - pk_ttl_mean
+  - pk_ttl_std
+  - pk_ttl_min
+  - pk_ttl_max
+  - pk_tcp_win_mean
+  - pk_tcp_win_std
+  - pk_frag_ratio
+  - pk_payload_mean
+  - pk_payload_std
+  - pk_payload_max
+  - pk_retx_ratio
+  - pk_scan_score
+
+# Feature count assertion — update if feature list changes
+n_features: 12
+
+# Fusion mode
+combined_with_flow:
+  flow_features: 24           # from configs/features.yaml
+  packet_features: 12         # this file
+  combined_total: 36          # COMBINED_FEATURE_NAMES in fusion.py
+
+# Coverage policy
+missing_coverage_policy:
+  fill_value: 0.0
+  flag_column: has_packet_features   # bool column added by fusion.py
+  silent_imputation: false           # MUST log coverage rate
+
+# NTRO compliance note
+ntro_note: >
+  These features are derived exclusively from pcap packet fields (TTL, TCP window,
+  IP fragmentation flags, payload length, TCP flags, source/destination ports).
+  They may not be claimed as NTRO-compliant until audit_pcap.py confirms that
+  real PCAP data was available and used for the reported experiment split.

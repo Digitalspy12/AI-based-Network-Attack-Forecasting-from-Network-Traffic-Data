@@ -1,0 +1,27 @@
+{
+  "experiment": "8D_Held_Out_WebAttacks",
+  "description": "Evaluate frozen LSTM on unseen WebAttacks family.",
+  "input_features": "flow",
+  "input_dim": 24,
+  "test_sequences": 8494,
+  "metrics": {
+    "label": "held_out_webattacks",
+    "k_step_risk_f1": {
+      "k1": 0.462,
+      "k2": 0.462,
+      "k3": 0.462,
+      "k4": 0.462,
+      "k5": 0.462
+    },
+    "k_step_tactic_f1": {
+      "k1": 0.1119,
+      "k2": 0.0942,
+      "k3": 0.0827,
+      "k4": 0.0681,
+      "k5": 0.0709
+    },
+    "F1_K_risk": 0.462,
+    "F1_K_tactic": 0.0856,
+    "k1_risk_f1": 0.462
+  }
+}

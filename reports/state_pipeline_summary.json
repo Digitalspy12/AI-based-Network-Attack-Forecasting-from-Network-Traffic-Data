@@ -1,10 +1,10 @@
 {
   "train_windows": 107301,
-  "val_windows": 22948,
-  "test_windows": 11287,
+  "val_windows": 25717,
+  "test_windows": 8518,
   "train_sequences": 107277,
-  "val_sequences": 22924,
-  "test_sequences": 11263,
+  "val_sequences": 25693,
+  "test_sequences": 8494,
   "feature_dim": 24,
   "history_length": 20,
   "K": 5,
@@ -16,12 +16,12 @@
     "C2": 898
   },
   "z_t_distribution_val": {
-    "BENIGN": 21720,
-    "INITIAL_ACCESS": 1193,
+    "BENIGN": 19258,
+    "IMPACT": 6424,
     "LATERAL_MOVEMENT": 35
   },
   "z_t_distribution_test": {
-    "IMPACT": 6424,
-    "BENIGN": 4863
+    "BENIGN": 7325,
+    "INITIAL_ACCESS": 1193
   }
 }

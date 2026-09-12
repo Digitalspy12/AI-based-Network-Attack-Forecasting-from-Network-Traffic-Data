@@ -1,0 +1,47 @@
+{
+  "sequence_id": 611,
+  "forecast_probabilities": 0.0,
+  "top_features": {
+    "top_features": [
+      "std_packet_len",
+      "ack_ratio",
+      "syn_ratio",
+      "mean_packet_len",
+      "mean_init_win_bytes_fwd"
+    ],
+    "feature_contributions": {
+      "std_packet_len": 0.006532450858708652,
+      "ack_ratio": 0.003697476588994422,
+      "syn_ratio": 0.002237590832726854,
+      "mean_packet_len": 0.0019418566832651353,
+      "mean_init_win_bytes_fwd": 0.001842586257807921
+    },
+    "xai_note": "SHAP values averaged over 20-window history. Indicates model focus, not causality."
+  },
+  "attention_weights": [
+    2.054367200798879e-07,
+    1.3955853717106947e-07,
+    1.7747234437592851e-07,
+    2.5527347702336556e-07,
+    2.8896221238028375e-07,
+    6.303009740804555e-07,
+    2.5165245460812002e-06,
+    8.365128451259807e-06,
+    2.213976767961867e-05,
+    0.00014004131662659347,
+    0.00018723923130892217,
+    0.0002010309399338439,
+    0.0003303023404441774,
+    0.003006794722750783,
+    0.0357791930437088,
+    0.09596898406744003,
+    0.25126150250434875,
+    0.2100611925125122,
+    0.20933225750923157,
+    0.19369672238826752
+  ],
+  "ground_truth_k1": 1,
+  "current_state": "BENIGN",
+  "outcome": "MISSED",
+  "evidence_summary": "Model predicts BENIGN. Top feature: std_packet_len. "
+}

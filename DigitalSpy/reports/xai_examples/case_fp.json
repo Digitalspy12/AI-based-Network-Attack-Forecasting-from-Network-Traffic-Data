@@ -1,0 +1,47 @@
+{
+  "sequence_id": 7036,
+  "forecast_probabilities": 1.0,
+  "top_features": {
+    "top_features": [
+      "fwd_bwd_byte_ratio",
+      "mean_init_win_bytes_fwd",
+      "ack_ratio",
+      "fin_ratio",
+      "psh_ratio"
+    ],
+    "feature_contributions": {
+      "fwd_bwd_byte_ratio": 0.015631386516998934,
+      "mean_init_win_bytes_fwd": 0.004157241023745057,
+      "ack_ratio": 0.0035817077998790297,
+      "fin_ratio": 0.0028636266790335787,
+      "psh_ratio": 0.0025019115656675396
+    },
+    "xai_note": "SHAP values averaged over 20-window history. Indicates model focus, not causality."
+  },
+  "attention_weights": [
+    8.881314670361462e-07,
+    9.043337740877178e-07,
+    1.3616087244372466e-06,
+    2.2810354494140483e-06,
+    7.137484317354392e-06,
+    1.4416340491152368e-05,
+    2.353377203689888e-05,
+    4.5485212467610836e-05,
+    8.415928459726274e-05,
+    0.000281266839010641,
+    0.00037156324833631516,
+    0.0005485800211317837,
+    0.002191574079915881,
+    0.004730281885713339,
+    0.012854630127549171,
+    0.02062617801129818,
+    0.03877433016896248,
+    0.07063354551792145,
+    0.35007214546203613,
+    0.49873578548431396
+  ],
+  "ground_truth_k1": 0,
+  "current_state": "BENIGN",
+  "outcome": "FP",
+  "evidence_summary": "Model predicts ATTACK. Top feature: fwd_bwd_byte_ratio. "
+}

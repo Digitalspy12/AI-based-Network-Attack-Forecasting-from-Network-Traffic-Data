@@ -109,6 +109,9 @@ def explain_lstm(
         logger.warning("shap/torch not available. Returning empty explanation.")
         return {"top_features": [], "feature_contributions": {}}
 
+    # Force CPU to avoid cuDNN RNN backward pass restriction in eval() mode
+    device = "cpu"
+    model = model.to(device)
     model.eval()
 
     import torch
@@ -119,18 +122,27 @@ def explain_lstm(
 
     inst = torch.FloatTensor(X_instance).to(device)
 
-    def model_fn(x):
-        """Return risk prob for GradientExplainer."""
-        with torch.no_grad():
-            risk, _, _ = model(x)
-        return risk[:, 0:1]  # k=1 risk only
+    import torch.nn as nn
+    class RiskWrapper(nn.Module):
+        def __init__(self, base):
+            super().__init__()
+            self.base = base
+        def forward(self, x):
+            risk, _, _ = self.base(x)
+            return risk[:, 0:1]
+            
+    risk_model = RiskWrapper(model).to(device)
+    risk_model.eval()
 
     try:
-        explainer = shap.GradientExplainer(model_fn, bg)
+        explainer = shap.GradientExplainer(risk_model, bg)
         shap_vals = explainer.shap_values(inst)
 
         if isinstance(shap_vals, list):
             shap_vals = shap_vals[0]
+            
+        if shap_vals.ndim == 4 and shap_vals.shape[-1] == 1:
+            shap_vals = shap_vals.squeeze(-1)
 
         # shap_vals: (1, 20, 24) → average over time axis
         mean_shap = np.abs(shap_vals[0]).mean(axis=0)  # (24,)

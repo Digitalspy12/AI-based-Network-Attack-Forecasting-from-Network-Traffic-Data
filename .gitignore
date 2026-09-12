@@ -14,3 +14,9 @@ venv/
 env/
 .env
 .ipynb_checkpoints/
+
+# Ignore large data and model files
+*.pcap
+*.pt
+models/
+

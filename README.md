@@ -25,19 +25,40 @@ Logistic Regression   Markov World Model P(Z_{t+k}|Z_t)
                Streamlit SOC Dashboard
 ```
 
-## Quick Start
+## Setting Up on a New Device
 
-### 1. Install dependencies
+### 1. Prerequisites
+- Python 3.10 or higher
+- Git
+- At least 8GB of RAM (16GB recommended for data processing)
+- (Optional but recommended) NVIDIA GPU for faster LSTM training
+
+### 2. Clone and Setup Environment
 
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+cd "AI-based-Network-Attack-Forecasting-from-Network-Traffic-Data/DigitalSpy"
+
+# Create a virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+# Install core dependencies and development tools
 pip install -e ".[dev]"
+
+# Install SHAP XAI dependencies (TensorFlow required for DeepExplainer compat)
+pip install tensorflow-cpu shap matplotlib seaborn
 ```
 
-### 2. Verify dataset
+### 3. Prepare the Dataset
+DigitalSpy expects the CIC-IDS2017 dataset (CSVs) to be located in the parent directory under `MachineLearningCVE/`.
+If you only want to test the Streamlit Demo, you just need a single valid CSV or PCAP to upload.
 
+To run the full pipeline, ensure the dataset is structured as follows:
 ```bash
 ls ../MachineLearningCVE/*.csv
-# Expected: 8 CSV files (Mon–Fri)
+# Expected: 8 CSV files (Mon–Fri) from CIC-IDS2017
 ```
 
 ### 3. Run the pipeline (phase by phase)
@@ -63,11 +84,20 @@ python scripts/evaluate_all.py
 python scripts/evaluate_lead_time.py
 ```
 
-### 4. Launch Streamlit SOC dashboard
+### 5. Launch the Streamlit SOC Dashboard (Demo)
+
+Once models are trained (or if you already have the pre-trained checkpoints in `models/`), you can launch the interactive dashboard:
 
 ```bash
 streamlit run src/digitalspy/ui/app.py
 ```
+
+**Using the Demo UI:**
+1. **Demo — Test Sequence Mode:** Automatically loads a 20-window sequence from the processed test dataset. Use the slider to pick a different sequence segment.
+2. **Upload File Mode:** Upload your own CIC-IDS2017 CSV or PCAP file. 
+   - CSVs will be processed dynamically to extract the 24 flow features.
+   - PCAPs will be streamed (up to 100k packets limit) to extract packet-level features and fused dynamically.
+3. Toggle XAI Evidence to see SHAP feature importance and temporal attention heatmaps.
 
 ### 5. Run unit tests
 
