@@ -1,11 +1,12 @@
-# Datasets
+# Datasets & Heavy Intermediates
 *.zip
 *.csv
 *.parquet
+*.pcap
 MachineLearningCVE/
 data/
 
-# Python
+# Python & Environment
 __pycache__/
 *.py[cod]
 *$py.class
@@ -14,9 +15,13 @@ venv/
 env/
 .env
 .ipynb_checkpoints/
+.pytest_cache/
+.DS_Store
 
-# Ignore large data and model files
-*.pcap
-*.pt
-models/
-
+# Ignore large raw models, but track lightweight pre-trained model checkpoints & scalers (~600KB total)
+models/*
+!models/lstm_checkpoint.pt
+!models/scaler.pkl
+!models/imputer.pkl
+!models/markov_matrix.npy
+!models/logistic_*.pkl
