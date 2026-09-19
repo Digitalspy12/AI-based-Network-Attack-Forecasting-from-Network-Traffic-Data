@@ -1,0 +1,14 @@
+# Authoritative metrics generated from evaluation artifacts (reports/*.json)
+# Fallback metrics are sourced from Phase 7 evaluation baseline if JSON is missing.
+one_step_risk:
+  lstm_macro_f1: 0.8368
+  lr_macro_f1: 0.7761
+  improvement_pp: 6.07
+multi_step_tactic:
+  lstm_macro_f1_k: 0.2773
+  markov_macro_f1_k: 0.9922
+proactive_lead:
+  median_seconds: 30
+  pdr: 0.217
+  target_pdr: 0.6
+  status: partial

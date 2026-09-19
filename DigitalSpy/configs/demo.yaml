@@ -1,0 +1,8 @@
+demo:
+  attack_onset_state: IMPACT
+  attack_onset_window: 4405
+  default_window_index: 4381
+  frozen: true
+  scenario_id: seq_4381
+  start_state: BENIGN
+  threshold: 0.9

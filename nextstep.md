@@ -1,460 +1,424 @@
-Yes. At this point, **do not rush into Phase 8 / advanced architecture yet**. You have enough evidence to make a strong engineering decision, but I see **three things that should be corrected/clarified before you freeze the research results**.
+Yes — **the same-input test confirms the main risk/state logic is now consistent**, but the screenshots reveal **three remaining UI issues that I would fix before freezing**.
 
-I reviewed the experiment artifacts together: pipeline summary, diagnostics, baseline metrics, LSTM curves/metrics, Markov metrics, final evaluation, and Phase 7 report.
+## What is now correct
 
-## 1. Your strongest result is real, but the dataset shift is huge
+For the uploaded CSV, the application consistently shows:
 
-The pipeline is structurally correct at the basic level: 24 features, 20-step history, K=5, with 107,277 train sequences, 22,924 validation sequences and 11,263 test sequences. 
+**Observed now**
 
-But look at the state distribution:
+> BENIGN
 
-* Train: BENIGN 73,707; RECON 8,298; INITIAL_ACCESS 5,292; C2 898; IMPACT 19,106
-* Validation: BENIGN 21,720; INITIAL_ACCESS 1,193; LATERAL_MOVEMENT 35
-* Test: BENIGN 4,863; IMPACT 6,424 
+**Forecast risk**
 
-That is a **massive scenario shift**.
+> 81.9% at +10s
+> max 85.8% over 50s
 
-It also explains why the LSTM has:
+**Operational state**
+
+> BELOW THRESHOLD
+
+**Raw analytical signal**
+
+> RECON
+
+**ATT&CK**
+
+> Not Activated
+
+That is coherent under the current logic:
 
 $$
-F1_{val,k1}=0.4398
+81.9\% < 90\%
 $$
+
+So the operational ATT&CK state is not activated while the raw state-head signal remains visible analytically.
+
+This is a significant improvement.
+
+---
+
+# 1. 🚨 The biggest remaining UI problem: chart says 50%, code uses 90%
+
+Look at the forecast chart.
+
+It displays:
+
+> **50% threshold**
+
+But your operational gate is:
+
+> **90%**
+
+This is confusing and potentially dangerous in an NTRO demo.
+
+A judge can reasonably think:
+
+> “The forecast crossed the 50% line, so why isn't the attack state activated?”
+
+### Fix this.
+
+For the main demo, make the dashed line:
+
+> **90% operational threshold**
+
+Then the screen becomes immediately understandable:
+
+```text
+Risk
+100% ┤
+ 90% ┼──────── Operational threshold
+ 80% ┤ ●────●────●────●────●
+ 70% ┤
+     └─────────────────────────
+       +10 +20 +30 +40 +50s
+```
+
+Now:
+
+> 81.9% = HIGH RISK
 
 but:
 
-$$
-F1_{test,k1}=0.8368
-$$
+> 81.9% < 90% = NOT ACTIVATED
 
-and why the best checkpoint is epoch 1 while training loss continues falling.  
+That is perfectly understandable.
 
-So I would **not write “the LSTM generalizes strongly”**.
+### If you intentionally need the 50% reference
 
-The defensible statement is:
+Then label it explicitly:
 
-> **The Attention-LSTM exceeded the predefined LR one-step risk-forecast benchmark on the selected test scenario by 6.07 percentage points.**
+> **50% risk reference**
 
-That is still a good result.
+and separately display:
 
----
+> **Operational activation threshold: 90%**
 
-# 2. There is a Phase 7 evaluation-method problem
-
-This is the most important thing I noticed.
-
-Your Phase 7 threshold is:
-
-$$
-0.90
-$$
-
-and the report says that threshold was **selected from validation**. Then Phase 7 evaluates the **validation BENIGN→ATTACK sequences using that threshold**. 
-
-That means the same validation data is doing two jobs:
-
-```text
-Validation
-   ↓
-choose threshold
-   ↓
-evaluate proactive forecasting
-```
-
-That is not ideal experimental separation.
-
-### Fix
-
-Create:
-
-```text
-TRAIN
-   ↓
-model fitting
-
-VALIDATION-A
-   ↓
-threshold selection
-
-VALIDATION-B
-   ↓
-proactive forecasting evaluation
-
-TEST
-   ↓
-final untouched benchmark
-```
-
-You don't necessarily need more raw data. You can split the existing validation **chronologically**, for example:
-
-```text
-first 50–70% → threshold calibration
-remaining 30–50% → Phase 7 evaluation
-```
-
-with complete temporal blocks.
-
-Then freeze the threshold.
-
-That will make the lead-time result much more credible.
+But for the NTRO demo, I'd keep it simple and use **90% on the main graph**.
 
 ---
 
-# 3. Your lead-time calculation should be cleaned up
+# 2. 🚨 ATT&CK field name is still wrong
 
-Your current report mixes **missed attacks** and **detected attacks** into a single lead-time statistic.
+Your panel says:
 
-For example, the report has:
+> **Predicted Zₜ Bucket → BELOW THRESHOLD**
 
-```text
-attack onset = 50s
-forecast = null
-lead_time = -50s
-detected = false
-```
+But `BELOW THRESHOLD` is **not a Zₜ bucket**.
 
-and similarly for missed attacks. 
-
-That creates a conceptual problem.
-
-A missed attack does not really have:
-
-$$
-LeadTime=-50s
-$$
-
-It has:
-
-$$
-LeadTime=\text{undefined / missed}
-$$
-
-I recommend reporting three separate quantities:
-
-### A. Proactive detection rate
-
-$$
-PDR=
-\frac{\text{attacks forecast before onset}}
-{\text{eligible attacks}}
-$$
-
-You already have:
-
-$$
-13/1281=1.01\%
-$$
-
-which is useful. 
-
-### B. Lead time among successful proactive forecasts
-
-For the attacks where:
-
-$$
-t_{forecast}<t_{onset}
-$$
-
-report:
-
-$$
-median(LeadTime)
-$$
-
-You already have a positive-only median of 20 seconds. 
-
-### C. Reactive detection delay
-
-For forecasts that happen after onset:
-
-$$
-DetectionDelay=t_{forecast}-t_{onset}
-$$
-
-That separates your system into:
+Your actual Z states are:
 
 ```text
-PROACTIVE
-    +20s
-
-AT ONSET
-     0s
-
-REACTIVE
-    +10s, +20s, +30s...
-
-MISSED
-    undefined
+BENIGN
+RECON
+INITIAL_ACCESS
+LATERAL_MOVEMENT
+C2
+IMPACT
 ```
 
-This is much cleaner than assigning negative values to missed cases.
+Change the panel to:
+
+### Operational Forecast State
+
+> **BELOW THRESHOLD**
+
+### Raw State-Head Signal
+
+> **RECON (58%)**
+
+### ATT&CK Tactic
+
+> **Not Activated**
+
+This will make the architecture immediately understandable.
 
 ---
 
-# 4. Your Markov result should be demoted from “benchmark winner”
+# 3. ⚠️ Heatmap title still needs correction
 
-The Markov matrix is genuinely learned for several states:
+It currently says:
 
-* RECON has 8,298 outgoing transitions
-* INITIAL_ACCESS 5,292
-* C2 898
-* IMPACT 19,106
+> **Tactic Probability Distribution per Horizon**
 
-while LATERAL_MOVEMENT has zero. 
+but you're showing the raw six-class state-head distribution.
 
-But the test itself is only:
+I'd change it to:
 
-```text
-BENIGN + IMPACT
-```
+> **Raw State-Head Probability Distribution**
 
-so Markov gets an almost perfect result because IMPACT persistence is strong. The Markov report shows F1 near 0.996 across horizons. 
+Subtitle:
 
-That should be presented as:
+> **Analytical distribution across project-defined network-state buckets; operational activation uses the overall risk threshold.**
 
-> **Scenario-specific persistence baseline**
-
-not:
-
-> **Markov world model outperforms the neural world model.**
-
-That distinction matters a lot in your final presentation.
+This is important because the heatmap is **not the operational decision**.
 
 ---
 
-# So what should you do now?
+# 4. The forecast cards are now conceptually good
 
-I recommend **one final controlled experiment cycle**, not a complete redesign.
+These cards are much better:
 
-## Phase 7.1 — Threshold sensitivity
+> HIGH RISK
+> 81.9%
+> Op State: BELOW THRESHOLD
+> Analytical: RECON (58%)
 
-Before changing features, evaluate:
+This structure is correct.
 
-```text
-threshold
-0.30
-0.40
-0.50
-0.60
-0.70
-0.80
-0.90
-```
-
-But do **not** select the best threshold based on the same evaluation data.
-
-Use:
+I would just improve the wording slightly:
 
 ```text
-Validation-A → choose threshold
-Validation-B → measure proactive forecasting
+T+1 (+10s)
+
+ATTACK RISK
+81.9%  HIGH
+
+Operational:
+NOT ACTIVATED
+
+Raw state-head:
+RECON (58%)
 ```
+
+"Not Activated" is slightly more natural than "Below Threshold" for an operational state.
+
+Then put:
+
+> Threshold: 90%
+
+under the operational state.
+
+---
+
+# 5. The attention chart is acceptable now
+
+The screenshot shows:
+
+> highest weight at t-11
+
+and the chart appears consistent with the wording.
+
+However, the distribution is still fairly flat.
+
+That's okay.
+
+Your correct explanation is:
+
+> **“Attention is distributed across recent history, with the highest weight at t-11. This is model evidence, not causal proof.”**
+
+Don't try to make this more dramatic.
+
+---
+
+# 6. The SHAP chart is currently suspiciously empty
+
+In the screenshots, the SHAP area appears to have the feature labels but essentially no visible bars.
+
+That deserves one test.
+
+Previously you had visible SHAP bars such as:
+
+> `std_packet_len`
+> `syn_ratio`
+> `distinct_dst_ips`
+
+Now the uploaded-CSV screenshot looks almost blank.
+
+### Test:
+
+Change sequence/window or upload a known evaluated case and verify:
+
+```text
+SHAP values ≠ all zero
+feature ranking exists
+bars are visible
+```
+
+If they really are all zero for this specific case, that's fine — but the UI should say something like:
+
+> **No material feature attribution above display threshold for this case.**
+
+Don't show an apparently broken chart.
+
+---
+
+# 7. There is still one missing piece: actual outcome
+
+This is the most important scientific demo test.
+
+The current screenshots show:
+
+```text
+BENIGN
+↓
+81.9% risk
+↓
+forecast
+```
+
+But we still haven't seen:
+
+```text
+↓ advance sequence
+ATTACK OBSERVED
+```
+
+You need to perform this exact test next.
+
+## Start
 
 Record:
 
-$$
-Precision,\ Recall,\ F1,\ FPR,\ PDR,\ median\ proactive\ lead\ time
-$$
+```text
+window
+timestamp
+observed = BENIGN
+risk t1...t5
+threshold
+```
 
-This will answer your current hypothesis:
+## Move forward
 
-> Is 0.90 simply too conservative?
+Advance the slider until the ground-truth attack appears.
+
+Then the UI should show:
+
+> **ACTUAL OUTCOME: IMPACT OBSERVED**
+
+or whatever the actual ground truth is.
+
+The critical evidence is:
+
+```text
+forecast timestamp < attack onset timestamp
+```
+
+That is what proves forecasting.
 
 ---
 
-# Phase 7.2 — Pre-attack feature analysis
+# 8. I would make the outcome a dedicated panel
 
-This is the most valuable scientific experiment after threshold sensitivity.
+Don't rely only on changing the "Current State" card.
 
-For every sequence where:
+Add a small panel below the forecast:
 
-```text
-current = BENIGN
-future = ATTACK
-```
-
-compare its history against:
+### Forecast → Observed Outcome
 
 ```text
-current = BENIGN
-future = BENIGN
+FORECAST MADE
+Window 2100
+Observed state: BENIGN
+Risk: 81.9%
+
+        ↓
+
+ACTUAL OUTCOME
+Window XXXX
+Observed state: IMPACT
+
+Lead time: +XX seconds
 ```
 
-Look at the 24 features:
+This would be **extremely strong for NTRO** because it makes the temporal claim explicit.
 
-```text
-flow_count
-bytes/sec
-packets/sec
-SYN ratio
-RST ratio
-IAT
-packet statistics
-destination diversity
-TTL variance
-TCP window statistics
-fragmentation
-...
-```
-
-Ask:
-
-$$
-P(\text{future attack}\mid H_t)
-$$
-
-versus
-
-$$
-P(\text{future benign}\mid H_t)
-$$
-
-The objective is to discover whether **your existing features actually contain precursor information**.
-
-Your Phase 7 result strongly suggests that they may not contain enough early signal. Only 13 of 1,281 sequences crossed the 0.90 threshold proactively, and all proactive alerts were at k=1 according to the report. 
-
-That is a powerful observation.
+It also prevents the evaluator from having to remember what the earlier slider value was.
 
 ---
 
-# Phase 7.3 — Only then add features
+# 9. Your main graph should tell one story
 
-Do **not jump directly to Mamba/TGN**.
+Right now it has too many overlapping ideas:
 
-First test feature families such as:
+> NOW
+> 200s → 5 horizons
+> 50% threshold
+> risk line
 
-```text
-Rate change:
-Δflow_count
-Δbytes/sec
-Δpackets/sec
+I'd simplify the plot.
 
-Acceleration:
-Δ²flow_count
-Δ²packets/sec
+### Header
 
-Diversity change:
-Δdst_ips
-Δdst_ports
+**Forecasted Attack Risk — Next 50 Seconds**
 
-TCP behaviour change:
-ΔSYN_ratio
-ΔRST_ratio
-ΔACK_ratio
+### Subtitle
 
-Temporal volatility:
-rolling std
-rolling max/min
-trend slope
-```
+**20 windows / 200s history → 5 future horizons**
 
-The important concept is:
+### Graph
 
-> **The model currently sees levels; forecasting may need trajectories.**
+* cyan risk line
+* **90% operational threshold**
+* clear **NOW** marker
+* t+1 ... t+5
 
-For example:
-
-```text
-Current:
-bytes/sec = 5000
-```
-
-may not be predictive.
-
-But:
-
-```text
-5000 → 7000 → 11000 → 18000
-```
-
-could be a precursor.
-
-That is much more directly connected to your forecasting objective than simply increasing the LSTM size.
+That's enough.
 
 ---
 
-# What I would NOT do yet
+# 10. What your final dashboard should communicate
 
-Don't do:
+The ideal screen becomes:
 
 ```text
-❌ Mamba
-❌ TGNN
-❌ Transformer
-❌ huge hyperparameter sweep
-❌ random oversampling
-❌ synthetic attack sequences
-❌ change the test set to get positive lead time
+CURRENT OBSERVED STATE
+BENIGN
+
+              ↓
+
+FORECASTED ATTACK RISK
+81.9% HIGH
+
++10s   +20s   +30s   +40s   +50s
+ 82     86     86     84     81
+
+90% ───────── operational threshold
+
+              ↓
+
+FORECASTED NETWORK STATE
+Operational: NOT ACTIVATED
+Raw signal: RECON (58%)
+
+              ↓
+
+ADVANCE REPLAY
+
+              ↓
+
+ACTUAL OUTCOME
+IMPACT OBSERVED
+
+              ↓
+
+FORECAST → OUTCOME
+Positive lead: XX seconds
 ```
 
-You need to establish whether the **information exists in the input** before making the model more complicated.
+That is the demo I would want an NTRO evaluator to see.
 
 ---
 
-# Your current DigitalSpy conclusion
+# Final status
 
-Right now the evidence supports:
+### ✅ Fixed
 
-### ✅ Proven
+Risk/state contradiction between forecast cards and ATT&CK
+Dynamic attention text
+Separate operational vs analytical state
+Benchmark interpretation
+Criterion 3 wording
 
-**Temporal history improves one-step future risk prediction versus LR on Experiment B.**
+### 🔴 Still fix
 
-$$
-0.8368 > 0.7761
-$$
+**1. Change the chart's 50% threshold to the 90% operational threshold, or clearly distinguish the two.**
 
-with:
+**2. Rename `Predicted Z_t Bucket` → `Operational Forecast State`.**
 
-$$
-+6.07pp
-$$
+**3. Rename heatmap → `Raw State-Head Probability Distribution`.**
 
-which passes your predefined C1 threshold. 
+**4. Verify SHAP isn't visually broken/empty.**
 
-### ⚠️ Scenario-limited
+**5. Most importantly: demonstrate the selected sequence all the way from BENIGN → forecast → actual attack.**
 
-Markov achieves extremely high tactic F1 because the test scenario is dominated by persistent IMPACT behaviour. 
-
-### ❌ Not yet proven
-
-**Proactive 20–50 second forecasting.**
-
-The controlled progression experiment produced only **1.01% proactive detections**, with almost all other outcomes reactive or missed. 
-
-### 🔬 Research question now
-
-The next question is no longer:
-
-> “Is LSTM better than LR?”
-
-You already answered that.
-
-It is:
-
-> **“What temporal signals precede an attack, and can those signals be learned early enough to produce positive forecast lead time?”**
-
-That should be **the next phase of DigitalSpy.**
-
-### My recommended execution order
-
-```text
-Phase 7.1
-Threshold sensitivity
-        ↓
-Phase 7.2
-Fix independent evaluation split
-        ↓
-Phase 7.3
-Pre-attack feature analysis
-        ↓
-Phase 7.4
-Add temporal-delta/trend features
-        ↓
-Retrain LSTM
-        ↓
-Re-evaluate lead time
-        ↓
-Only if necessary:
-Phase 8 Mamba/TGN/advanced world model
-```
-
-
+Once those are done, I would consider the application **very close to freeze-ready**. The remaining work is now mostly about making the scientific story unmistakable rather than adding functionality.

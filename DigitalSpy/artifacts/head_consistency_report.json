@@ -1,0 +1,10 @@
+{
+    "n_samples": 1000,
+    "pearson_correlation": 0.8288387155657579,
+    "spearman_correlation": 0.9608294876543723,
+    "mean_absolute_disagreement": 0.13825162209756672,
+    "median_absolute_disagreement": 0.016705840826034546,
+    "agreement_rate_above_threshold": 1.0,
+    "agreement_rate_below_threshold": 0.832183908045977,
+    "finding": "The binary risk and state heads are not fully probability-consistent."
+}

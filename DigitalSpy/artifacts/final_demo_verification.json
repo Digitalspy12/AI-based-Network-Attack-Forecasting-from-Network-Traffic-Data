@@ -1,0 +1,22 @@
+{
+  "demo_verification": {
+    "scenario_id": "seq_4381",
+    "start_window_index": 4381,
+    "start_timestamp": "88000",
+    "start_state": "BENIGN",
+    "attack_onset_window": 4405,
+    "attack_onset_timestamp": "88100",
+    "attack_onset_state": "IMPACT",
+    "threshold": 0.9,
+    "risk": {
+      "t1": 0.9070863723754884,
+      "t2": 0.9336997866630554,
+      "t3": 0.8855516910552979,
+      "t4": 0.8825080394744873,
+      "t5": 0.8975586295127869
+    },
+    "first_threshold_crossing": 10.0,
+    "proactive_lead_seconds": 40.0,
+    "valid": true
+  }
+}

@@ -278,3 +278,30 @@ def stream_windows(
     # Flush the final bucket
     if current_bucket and current_window_start is not None:
         yield current_window_start, current_bucket
+
+
+def process_pcap_interval(pcap_path: str | Path, max_packets: Optional[int] = 100000) -> pd.DataFrame:
+    """Convenience helper to extract packet-level feature windows from PCAP for UI upload."""
+    import pandas as pd
+    from digitalspy.features.packet_features import extract_packet_features, PACKET_FEATURE_NAMES
+
+    rows = []
+    for w_start, bucket in stream_windows(pcap_path, window_seconds=10.0, max_packets=max_packets):
+        if not bucket:
+            continue
+        host_ip = bucket[0].src_ip
+        feats = extract_packet_features(bucket, window_src_ip=host_ip)
+        row = {
+            "host_ip": host_ip,
+            "window_start": w_start,
+            "packet_coverage": 1.0,
+        }
+        row.update(feats)
+        rows.append(row)
+
+    if not rows:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(rows)
+    return df.sort_values("window_start").reset_index(drop=True)
+
